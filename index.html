@@ -752,4 +752,76 @@
             });
         }, observerOptions);
 
-        // Observe
+        // Observe all feature cards
+        document.querySelectorAll('.feature-card, .stat-card, .tech-card, .whatsapp-feature').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(30, 58, 138, 0.98)';
+            } else {
+                header.style.background = 'rgba(30, 58, 138, 0.95)';
+            }
+        });
+
+        // Simulate CO₂ PPM display update
+        function updatePPMDisplay() {
+            const ppmDisplay = document.querySelector('.ppm-display');
+            const randomPPM = Math.floor(Math.random() * (450 - 350) + 350);
+            ppmDisplay.innerHTML = `Medición en Tiempo Real: ${randomPPM} PPM CO₂`;
+            
+            // Color based on PPM level
+            if (randomPPM > 420) {
+                ppmDisplay.style.background = 'linear-gradient(45deg, #dc2626, #ef4444)';
+            } else if (randomPPM > 380) {
+                ppmDisplay.style.background = 'linear-gradient(45deg, #f59e0b, #f97316)';
+            } else {
+                ppmDisplay.style.background = 'linear-gradient(45deg, #10b981, #06b6d4)';
+            }
+        }
+
+        // Update PPM every 5 seconds for demo
+        setInterval(updatePPMDisplay, 5000);
+        
+        // Mobile menu toggle (if needed)
+        const createMobileMenu = () => {
+            const nav = document.querySelector('.nav-links');
+            const menuBtn = document.createElement('button');
+            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            menuBtn.style.cssText = `
+                display: none;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+            `;
+            
+            document.querySelector('nav').appendChild(menuBtn);
+            
+            menuBtn.addEventListener('click', () => {
+                nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+            });
+            
+            // Show mobile menu button on small screens
+            const checkScreen = () => {
+                if (window.innerWidth <= 768) {
+                    menuBtn.style.display = 'block';
+                    nav.style.display = 'none';
+                } else {
+                    menuBtn.style.display = 'none';
+                    nav.style.display = 'flex';
+                }
+            };
+            
+            window.addEventListener('resize', checkScreen);
+            checkScreen();
+        };
+        
+        createMobileMenu();

@@ -1,11 +1,755 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>HuellitasC - Huella de Carbono</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HuellitasC - Mide y Reduce tu Huella de Carbono</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(30, 58, 138, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #06b6d4;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: #10b981;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #06b6d4;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(59, 130, 246, 0.8)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="co2" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse"><circle cx="40" cy="40" r="15" fill="%2306b6d4" opacity="0.1"/><text x="40" y="45" text-anchor="middle" fill="%2310b981" opacity="0.2" font-size="12">CO₂</text></pattern></defs><rect width="100%" height="100%" fill="url(%23co2)"/></svg>');
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #10b981, #06b6d4);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 0;
+            background: white;
+            margin: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e3a8a;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #10b981, #06b6d4);
+            border-radius: 2px;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #10b981;
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.2);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(45deg, #10b981, #06b6d4);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        /* Technology Section */
+        .tech-section {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tech-card {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .tech-card i {
+            font-size: 3rem;
+            color: #06b6d4;
+            margin-bottom: 1rem;
+        }
+
+        /* WhatsApp Section */
+        .whatsapp-section {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white;
+        }
+
+        .whatsapp-content {
+            text-align: center;
+        }
+
+        .whatsapp-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .whatsapp-feature {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            color: #06b6d4;
+        }
+
+        /* Footer */
+        footer {
+            background: #1e3a8a;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #06b6d4;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #06b6d4;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Privacy Policy Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .ppm-display {
+            background: linear-gradient(45deg, #ef4444, #f97316);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>HuellitasC</h1>
-    <p>Plataforma para medir y reducir tu huella de carbono</p>
-    <p>Contacto: info@huellitasc.com</p>
-</body>
-</html>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                HuellitasC
+            </div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#acerca">Acerca</a></li>
+                <li><a href="#funcionalidades">Funcionalidades</a></li>
+                <li><a href="#tecnologia">Tecnología</a></li>
+                <li><a href="#whatsapp">WhatsApp</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#privacidad" onclick="openModal()">Privacidad</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>🌱 HuellitasC</h1>
+                <p>Mide, Monitorea y Reduce tu Huella de Carbono con Tecnología Avanzada</p>
+                <div class="ppm-display">
+                    Medición en Tiempo Real: CO₂ PPM
+                </div>
+                <a href="#acerca" class="cta-button">Conoce Más</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="acerca" class="section">
+        <div class="container">
+            <h2>Nuestra Misión</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p><strong>HuellitasC</strong> es una aplicación innovadora que te ayuda a medir y reducir tu huella de carbono de manera inteligente y personalizada.</p>
+                    
+                    <p>A través de cuestionarios semanales detallados, calculamos tu impacto ambiental aproximado en PPM (partes por millón) y te proporcionamos consejos personalizados para reducir tu huella de carbono.</p>
+                    
+                    <p>Nuestra plataforma integra tecnología IoT con sensores Arduino MG811 para monitoreo ambiental en tiempo real, y cuenta con visualizaciones 3D de ciudades para una experiencia inmersiva y educativa.</p>
+
+                    <p>Utilizamos WhatsApp Business para mantener comunicación efectiva con nuestros usuarios, enviando recordatorios de evaluaciones, consejos personalizados y alertas ambientales importantes.</p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <span class="stat-number">1000+</span>
+                        <span>Usuarios Activos</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">25%</span>
+                        <span>Reducción Promedio CO₂</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">5000+</span>
+                        <span>Mediciones Realizadas</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">24/7</span>
+                        <span>Monitoreo Continuo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="funcionalidades" class="section">
+        <div class="container">
+            <h2>Funcionalidades Principales</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h3>Cuestionarios Semanales</h3>
+                    <p>Evaluaciones detalladas de tus hábitos de consumo, transporte, energía y alimentación para calcular tu huella de carbono.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Medición en PPM</h3>
+                    <p>Cálculo preciso de tu impacto ambiental expresado en partes por millón de CO₂ equivalente.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Consejos Personalizados</h3>
+                    <p>Recomendaciones específicas basadas en tus resultados para reducir efectivamente tu huella de carbono.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-microchip"></i>
+                    <h3>Sensores IoT</h3>
+                    <p>Monitoreo ambiental en tiempo real utilizando Arduino y sensores MG811 para medición de CO₂.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-city"></i>
+                    <h3>Ciudades 3D</h3>
+                    <p>Explora entornos urbanos tridimensionales interactivos para visualizar el impacto ambiental.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>App Multiplataforma</h3>
+                    <p>Desarrollada en ASP.NET Core 8.0 para máximo rendimiento y compatibilidad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="tecnologia" class="section tech-section">
+        <div class="container">
+            <h2 style="color: white;">Tecnología Avanzada</h2>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <i class="fab fa-microsoft"></i>
+                    <h3>ASP.NET Core 8.0</h3>
+                    <p>Framework moderno y eficiente para máximo rendimiento y escalabilidad.</p>
+                </div>
+                <div class="tech-card">
+                    <i class="fas fa-microchip"></i>
+                    <h3>Arduino + MG811</h3>
+                    <p>Sensores especializados para medición precisa de CO₂ en tiempo real.</p>
+                </div>
+                <div class="tech-card">
+                    <i class="fas fa-cube"></i>
+                    <h3>Visualización 3D</h3>
+                    <p>Entornos tridimensionales inmersivos para educación ambiental interactiva.</p>
+                </div>
+                <div class="tech-card">
+                    <i class="fas fa-cloud"></i>
+                    <h3>IoT Cloud</h3>
+                    <p>Conectividad en la nube para sincronización de datos de sensores ambientales.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Section -->
+    <section id="whatsapp" class="section whatsapp-section">
+        <div class="container">
+            <div class="whatsapp-content">
+                <h2 style="color: white;">Comunicación Inteligente vía WhatsApp</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">Mantenemos comunicación efectiva con nuestros usuarios a través de WhatsApp Business para optimizar el seguimiento ambiental y reducir el uso de papel.</p>
+                
+                <div class="whatsapp-features">
+                    <div class="whatsapp-feature">
+                        <i class="fas fa-bell" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <h3>Recordatorios de Evaluación</h3>
+                        <p>Notificaciones semanales para completar tus cuestionarios de huella de carbono.</p>
+                    </div>
+                    <div class="whatsapp-feature">
+                        <i class="fas fa-chart-bar" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <h3>Reportes de Progreso</h3>
+                        <p>Resúmenes mensuales de tu evolución en la reducción de emisiones de CO₂.</p>
+                    </div>
+                    <div class="whatsapp-feature">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <h3>Alertas Ambientales</h3>
+                        <p>Notificaciones cuando los sensores detectan niveles elevados de CO₂ en tu área.</p>
+                    </div>
+                    <div class="whatsapp-feature">
+                        <i class="fas fa-leaf" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <h3>Tips Sostenibles</h3>
+                        <p>Consejos personalizados basados en tus hábitos para reducir tu impacto ambiental.</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <p><strong>Política de Mensajería:</strong> Solo enviamos mensajes relevantes para tu seguimiento ambiental y bienestar ecológico. Puedes cancelar las notificaciones respondiendo "STOP" en cualquier momento.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="section">
+        <div class="container">
+            <h2>Contáctanos</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Información de Contacto</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>demian4529@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>+52 1 551 804 4292</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ciudad de México, México</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Lun - Vie: 9:00 AM - 6:00 PM</span>
+                    </div>
+                </div>
+                <div>
+                    <h3>Síguenos</h3>
+                    <p>Mantente al día con las últimas actualizaciones sobre sostenibilidad y tecnología ambiental:</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                    <div style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
+                        <h4 style="color: #1e3a8a;">¿Listo para medir tu huella?</h4>
+                        <p>Únete a nuestra comunidad y comienza a monitorear tu impacto ambiental con tecnología de vanguardia.</p>
+                        <a href="#" class="cta-button" style="margin-top: 1rem;">Comenzar Ahora</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>HuellitasC</h3>
+                    <p>Tecnología avanzada para un futuro más sostenible y consciente del medio ambiente.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <p><a href="#acerca" style="color: #06b6d4;">Acerca de Nosotros</a></p>
+                    <p><a href="#funcionalidades" style="color: #06b6d4;">Funcionalidades</a></p>
+                    <p><a href="#contacto" style="color: #06b6d4;">Contacto</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <p><a href="#privacidad" onclick="openModal()" style="color: #06b6d4;">Política de Privacidad</a></p>
+                    <p><a href="#" style="color: #06b6d4;">Términos de Servicio</a></p>
+                    <p><a href="#" style="color: #06b6d4;">Política de WhatsApp</a></p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #3b82f6; padding-top: 1rem;">
+                <p>&copy; 2025 HuellitasC. Todos los derechos reservados. | Desarrollado con 💙 para un planeta más limpio</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 style="color: #1e3a8a;">Política de Privacidad y WhatsApp</h2>
+            
+            <h3>Información que Recopilamos</h3>
+            <p>En HuellitasC recopilamos la siguiente información para ofrecer servicios de monitoreo ambiental:</p>
+            <ul>
+                <li>Datos de cuestionarios semanales sobre hábitos de consumo</li>
+                <li>Información de contacto para comunicación vía WhatsApp</li>
+                <li>Datos de sensores ambientales (CO₂, temperatura, humedad)</li>
+                <li>Métricas de uso de la aplicación para mejoras</li>
+            </ul>
+
+            <h3>Uso de WhatsApp Business</h3>
+            <p>Utilizamos WhatsApp Business API para:</p>
+            <ul>
+                <li><strong>Recordatorios de evaluación:</strong> Notificaciones para completar cuestionarios semanales</li>
+                <li><strong>Reportes de progreso:</strong> Resúmenes de tu evolución en reducción de CO₂</li>
+                <li><strong>Alertas ambientales:</strong> Avisos cuando se detectan niveles críticos de contaminantes</li>
+                <li><strong>Consejos personalizados:</strong> Recomendaciones basadas en tus patrones de consumo</li>
+            </ul>
+
+            <h3>Mediciones y Sensores</h3>
+            <p>Los datos de sensores Arduino MG811 se utilizan exclusivamente para:</p>
+            <ul>
+                <li>Monitoreo de calidad del aire en tiempo real</li>
+                <li>Generación de alertas de seguridad ambiental</li>
+                <li>Análisis estadísticos agregados y anónimos</li>
+                <li>Mejora de algoritmos de recomendaciones</li>
+            </ul>
+
+            <h3>Tus Derechos</h3>
+            <ul>
+                <li>Cancelar notificaciones WhatsApp respondiendo "STOP"</li>
+                <li>Solicitar eliminación de datos personales</li>
+                <li>Acceder a tu información almacenada</li>
+                <li>Exportar tus datos de mediciones</li>
+            </ul>
+
+            <h3>Seguridad</h3>
+            <p>Protegemos tus datos mediante encriptación de extremo a extremo y nunca compartimos información personal con terceros sin consentimiento explícito.</p>
+
+            <h3>Contacto</h3>
+            <p>Para consultas sobre privacidad: <strong>demian4529@gmail.com</strong></p>
+            
+            <p><em>Última actualización: Junio 2025</em></p>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('privacyModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('privacyModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('privacyModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe
